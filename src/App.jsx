@@ -1,34 +1,18 @@
 import { useEffect, useState } from "react";
 
 import "./App.css";
-import useDebounce from "./hooks/useDebounce";
+import useCounterStore from "./store";
 function App() {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  const handleResize = () => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", debouncedHandleChange);
-
-    return () => {
-      window.removeEventListener("resize", debouncedHandleChange);
-    };
-  }, []);
-
-  const debouncedHandleChange = useDebounce(handleResize, 2000);
-
+  const { count, increment, decrement, incrementAsync } = useCounterStore();
   return (
     <>
-      <h1>Checkout</h1>
-      <p>Window Size: {`${windowSize.width}   X  ${windowSize.height}`}</p>
+      <h1>Zustand</h1>
+      <div style={{ display: "flex", justifyContent: "center", gap: "8px" }}>
+        <button onClick={increment}>Increment</button>
+        <p>{count}</p>
+        <button onClick={decrement}>Decrement</button>
+        <button onClick={incrementAsync}>Increment Async</button>
+      </div>
     </>
   );
 }
